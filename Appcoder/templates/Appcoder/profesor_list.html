@@ -1,0 +1,20 @@
+{% extends 'Indice/index.html' %}
+
+{% block header_index %}
+{% endblock header_index %}
+
+{% block pruebaTemplate %}
+
+{% for profesor in object_list %}
+   <li>
+      {{profesor}}
+      <a href= {% url 'profesor_detalle' profesor.id %}>  Ver más... </a>
+      <a href= {% url 'profesor_detalle' profesor.id %}>  Editar </a>
+      <a href= {% url 'profesor_detalle' profesor.id %}>  Borrar </a>
+
+   <li>
+
+{% endfor %}
+
+{% endblock pruebaTemplate %}
+

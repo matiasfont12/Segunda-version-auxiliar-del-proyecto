@@ -1,0 +1,15 @@
+{% extends 'Indice/index.html' %}
+
+{% block header_index %}
+{% endblock header_index %}
+
+{% block pruebaTemplate %}
+
+<form method="post">
+    {% csrf_token %}
+    Quiere borrar este elemento
+    <input type="sumbit" placeholder="Confirmar">
+<form>
+ 
+{% endblock pruebaTemplate %}
+

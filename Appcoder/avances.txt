@@ -1,0 +1,5 @@
+Lo nuevo que hicimos fue ver lo que es el CRUD, e implementamos sus funcionalidades en las vistas, en donde fuimos creando algunas y dandoles función con sus respectivos templates.
+Tambien creamos otro modelo de formulario para crear estudiantes y que se devuelvan en pantalla. 
+Y por ultimo vimos como funciona la opcion return redirect, que sirve para que el template nos regrese a la navegacion que le indiquemos.
+El redirect sirve especificamente para movernos entre vistas y manteniendo el uso de información de cada una.
+Lo usamos de la siguiente manera: return redirect("template"), y ese template va a ser el que pusimos en la url (especificamente el nombre que indicamos en el name), y nos dirije a la vista que le creamos.
