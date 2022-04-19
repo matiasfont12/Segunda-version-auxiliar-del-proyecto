@@ -19,6 +19,5 @@ urlpatterns = [
     path("profesores/<int:pk>/", views.ProfesorDetalle.as_view(), name= "profesor_detalle"),
     path("profesores/<int:pk>/", views.ProfesorEditar.as_view(), name= "profesor_detalle"),
     path("profesores/<int:pk>/", views.ProfesorBorrar.as_view(), name= "profesor_detalle")
-
 ]
   

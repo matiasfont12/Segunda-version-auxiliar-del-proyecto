@@ -5,6 +5,8 @@ from Appcoder.forms import CursoFormulario, BusquedaNombre, EstudianteFormulario
 import random
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def nuevo_curso(request):
@@ -55,6 +57,8 @@ def listado_estudiantes(request):
   return render(request,"Appcoder/listado_estudiantes.html",
                 {"listado_estudiantes": listado_estudiantes})  
   
+  
+@login_required 
 def crear_estudiante(request):
   
   formulario = EstudianteFormulario()
@@ -135,12 +139,12 @@ class ProfesorDetalle(DetailView):
   template_name = "Appcoder/profesor_datos.html"
   
   
-class ProfesorEditar(UpdateView):
+class ProfesorEditar(LoginRequiredMixin, UpdateView):
   model = Profesor
   success_url = "/Appcoder/profesores/"
   fields = ["nombre", "apellido", "email", "profesion"]
   
   
-class ProfesorBorrar(DeleteView):
+class ProfesorBorrar(LoginRequiredMixin, DeleteView):
   model = Profesor
   success_url = "/Appcoder/profesores/"

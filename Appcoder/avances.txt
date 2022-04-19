@@ -1,5 +1,92 @@
-Lo nuevo que hicimos fue ver lo que es el CRUD, e implementamos sus funcionalidades en las vistas, en donde fuimos creando algunas y dandoles función con sus respectivos templates.
-Tambien creamos otro modelo de formulario para crear estudiantes y que se devuelvan en pantalla. 
-Y por ultimo vimos como funciona la opcion return redirect, que sirve para que el template nos regrese a la navegacion que le indiquemos.
-El redirect sirve especificamente para movernos entre vistas y manteniendo el uso de información de cada una.
-Lo usamos de la siguiente manera: return redirect("template"), y ese template va a ser el que pusimos en la url (especificamente el nombre que indicamos en el name), y nos dirije a la vista que le creamos.
+Login, Register, Logout
+
+Login: Lo primero es darle una direccion por medio de url, y creando un template que vamos a crear en nuestra aplicacion Indice
+y en este template, vamos a usar herencia y bloques, como veniamos haciendo
+
+Esta informacion la vamos a pasar en metodo post para mayor seguridad, para eso la vamos a pasar tambien como form por medio de un input o buton
+el formulario que vamos a usar sera el form.as_p, que es un formulario default de django
+
+Una vez que tenemos el template, trabajamos en el url, pero en la aplicacion en donde hicimos el template (Indice). 
+Finalmente vamos a crearle la vista y vamos a darle un espacio en nuestro index.html
+
+Una vez que tenemos todo creado, en las vistas vamos a llamar a from django.contrib.auth import login, authenticate y from django.contrib.auth.forms import AuthenticationForm
+Estas son las dos funciones que vamos a usar para logearnos
+
+La particularidad es que, estamos llamando a una funcion login, y nuestra vista tambien se llama login, podemos cambiar el nombre de la vista o tambien renombrar la funcion.
+Nosotros vamos a renombrar la funcion llamandola: from django.contrib.auth import login as django_login, authenticate 
+
+Una vez que llamamos a estas dos funcionalidades, tenemos que ver como las vamos a usar.
+Las vamos a usar de la siguiente manera, llamandola en nuestra vista segun el orden, pero tambien vamos a trabajar con los datos de este formulario
+y para eso lo trataremos como post.
+
+En el formulario, usamos el AuthenticationForm, y se lo pasamos con un request, y con un pedido de data llamando al request.POST, para dejar pasar el metodo
+Luego, si la informacion es correcta, que cree un usuario y una contraseña con la informacion correcta
+Si la informacion no es vacia, registra la informacion y da el acceso. En caso contrario no lo hara
+
+
+Ahora vamos a trabajar el logout, que es un poco mas simple que el login
+
+Logout:
+
+Para trabajar el logout, lo unico que necesitamos es crear su url, trabajarla como una clase basada en vista, dandole indicaciones y trabajar su template.
+En nuestra url vamos a traer from django.contrib.auth.views import LogoutView, y esto nosotros lo vamos a utilizar dentro de nuestra url
+Logout.View.as_view(), la vamos a trabajar como una vista predeterminada, y dentro le vamos a pasar parametros de nuestro template para que lo reconozca.
+Logout.View.as_view(template_name= "Indice/logout.html", name= "logout). Ya con esto tenemos nuestro logout creado.
+
+Register:
+
+Para trabajar el register es similar, vamos a crear su url, pero tambien su vista, ya que necesita mas cosas
+Lo tratamos como cualquier formulario, solamente que a la hora de configurar el save y el cleaned data, no tenemos que darselo uno por uno ya que guarda informacion automaticamente
+
+Este formulario que nosotros creamos, por default tiene condiciones dadas, lo que nosotros queremos es que no se muestren en pantalla, si no que esten explicitas.
+Para limpiar esto lo que vamos a realizar es crear un formulario en nuestra aplicacion, y trabajarlo
+Dentro del formulario que creamos, primero vamos a importar el formulario, y luego vamos a importar el UserCreationForm
+y este UserCreationForm lo vamos a dar como parametro en la clase que trabajemos en nuestro formulario
+en lo que trabajemos, tenemos que incluir tanto un forms.Charfield() y dentro del Charfield vamos a dar las indicaciones que nostros quisieramos.
+Lo vamos a hacer usando un label=, y ademas vamos a usar un widget=
+El widget= es un adaptador que le damos al Charfield, ya que el Charfield toma por defecto un campo de texto, y con el widget lo que hace es funcionar como adaptador 
+a este widget le damos un forms.Passwordinput(), esto es para que el campo pida una contraseña para funcionar
+
+Luego tenemos que configurar que cierta informacion se maneje con formularios.
+Para eso usamos el class Meta: funciona para ocultar cierta informacion de nuestro formulario, en donde el usuario no tiene el alcance de ver
+a este class meta tenemos que indicarle los campos que va a trabajar, y tambien le vamos a indicar que oculte los requisitos que pide el formulario para crear un usuario.
+
+class meta:
+model = A este usuario lo tenemos que importar con el User (from.django.contrib.auth.models import User)
+fields= Vamos a indicar que campos debe trabajar como una lista, ["email", "password", "password2"]
+help_texts= Aca vamos a hacer que se oculten los requisitos del formulario. Esta funcion toma por defecto un diccionario:
+
+Especificamente, lo podemos trabajar con List Comprehension, que es un metodo for en donde con argumentos podemos crear diccionarios, tuplas, listas etc.
+
+k: " " for k in fields = Lo que hacemos es, pasarle un valor para que trabaje, y luego el valor en los campos.
+Usamos especificamente la K ya que hacemos mencion a las keys
+
+Luego de esto debemos usar nuestro formulario. Para eso reemplazamos este formulario en nuestras vistas, importandolo.
+
+cuando lo sustituimos, y en nuestra pagina queremos registrarnos, nos va a tirar un error, ya que no le estamos pasando el Username.
+Entonces lo que vamos a hacer, es borrarle el username que le estabamos pasando, y pasarlo por default en nuestro formulario. Asi no crea usuarios fantasmas
+De otra parte se crearian modelos erroneos y nosotros no podriamos acceder a ellos desde la administracion.
+
+Ahora que tenemos el logout, login y register, lo que tenemos que tener en cuenta es poder limitar las personas para ejecutar operaciones solamente si estan registradas.
+
+Para esto usamos decoradores y mixin
+
+Decoradores: Se usan para limitar las vistas planas, como las que creamos en views.
+Mixin: Son clases que limitan el acceso a las clases basadas en vistas.
+
+Para usar decoradores, lo que hacemos llamar from.django.contrib.auth.decorators import login_required.
+Este login_required lo usamos con un @ arriba de las vistas.
+
+@login_required
+
+Entonces, cuando una persona que no este logeada, acceda a la vista, le va a saltar un error de pagina no disponible.
+Para que esto no le aparezca, tenemos que indicarle al decorador donde debe acceder para poder logearse
+Esto lo hacemos en nuestros settings, en la carpeta de nuestro proyecto
+
+en nuestro archivo settings: escribimos LOGIN_URL = /'login/', y esto direcciona directamente al usuario a que se loguee antes de usar una vista.
+
+Para usar mixin, debemos llamar from.django.contrib.auth.mixin import LoginRequiredMixin, y a este atributo lo vamos a poner dentro de los parametros de las clases basadas en vistas
+Muy importante que este parametro siempre vaya primero. de caso contrario no funciona.
+
+
+
