@@ -89,4 +89,46 @@ Para usar mixin, debemos llamar from.django.contrib.auth.mixin import LoginRequi
 Muy importante que este parametro siempre vaya primero. de caso contrario no funciona.
 
 
+Edicion de usuario:
+
+Para trabajar la edicion del usuario, lo haremos mediante un formulario y un template
+Nosotros habiamos creado un form para registrarse, usaremos uno similar para crear el template. Solamente que el formulario lo trataremos como una tabla.
+
+Luego de esto vamos a crear la url y su vista.
+
+Vamos a tratar el formulario:
+En nuestro formulario vamos a hacer que se nos permita cargar ciertos datos mas.
+Entre ellos teniamos, email y contraseñas, ahora vamos a añadir nombre y apellido. con first_name y last_name, delimitandolo con charfield
+y a estos parametros los indicamos en la clase meta.
+
+El tema es que si dejamos esto asi, nos dice que necesitamos informacion para que se completen los campos del formulario.
+Para eso agregamos como delimitante required=False, esto indica que puede no cargarse y enviar informacion de todas maneras
+
+Ahora en nuestra vista lo que vamos a agregar, es que no cualquiera pueda editar esta informacion. Si no solamente gente que este logeada.
+Para esto le agregamos un decorador
+
+Ahora, la estructura del formulario va a ser similar a la anterior, solamente que este lo usamos para que el usuario edite sus datos, entonces sera un poco mas corto.
+Pero en si, tenemos que tener en cuenta que debe pedir la informacion para funcionar desde el mismo request
+Esta informacion la pedimos por medio del request.user. y esto funciona asi ya que cuando nos logeamos estamos aportando la informacion que necesita para trabajar, entonces hace el llamado de informacion desde archivo.
+Y si la informacion que entra es valida, que se limpie y que se pueda obtener mediante un get, aca en este caso es conveniente usar un get en vez de un filter ya que estamos pidiendo algo especifico y no va a explotar, ya que sabemos que lo que pedimos esta.
+asi es como pedimos los atributos que indicamos en el formulario, en especial las contraseñas no pueden tener espacios, si o si su atributo tiene que pedir contraseña.
+y despues de todo esto, podemos indicar un request.user.save() para que se guarde.
+
+Esta es una manera de trabajar este formulario, tambien lo podemos usar con: loged_user = request.user e ir indicando logued_user."atributos" en todo los atributos
+
+El problema aca, es que si le pasamos password1 y 2, no las va a poder guardar ya que no es un atributo que tenga el usuario.
+Entonces para evitar esto, en vez de heredar desde el UserCreationForm, podemos heredar de nuestro propio formulario, atribuyendo como parametro form.Forms y borrando a su vez la class meta.
+y tambien vamos a borrar en nuestra vista el pedido de password1 y 2. Pero nosotros necesitamos de esas contraseñas, entonces lo vamos a trabajar con condicionales
+
+Le vamos a decir que si al obtener las contraseñas, la primer contraseña comparada con la segunda contraseña son mayores a 8, que cree una nueva contraseña usando el set_password()
+
+
+Ahora lo que vamos a identificar, es identificar cuando uno esta logueado o no segun el template, ya que desloguearse y editar el usuario no tienen sentido que aparezcan en nuestra pagina
+Entonces esto es lo que vamos a modificar.
+
+para eso vamos a usar condicionales en nuestro template padre index
+en el el condicional que vamos a usar, sera el if y el else como bloque; con el parametro if request.user.is_authenticated
+y tambien vamos a hacer que la informacion predeterminada quede guardada para que la modifique el usuario en el formulario, esto lo vamos a realizar como lo hicimos antes com el initial y tratandolo como un diccionario.
+
+Avatar:
 
