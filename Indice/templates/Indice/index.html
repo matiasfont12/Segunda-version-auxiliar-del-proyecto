@@ -21,15 +21,17 @@
         <nav class="navbar navbar-light bg-light static-top">
             <div class="container">
                 <a class="navbar-brand" href={% url 'inicio' %}>Home</a>
-                <a class="navbar-brand" href={% url 'plantilla' %}>Test</a>
-                <a class="navbar-brand" href={% url 'about' %}>Sobre Mí</a>
-                <a class="navbar-brand" href={% url 'formulario' %}>Join!</a>
-                <a class="navbar-brand" href={% url 'listado_estudiantes' %}>Comunidad</a>
+                {% comment %} <a class="navbar-brand" href={% url 'plantilla' %}>Test</a> {% endcomment %}
+                <a class="navbar-brand" href={% url 'about' %}>Sobre mí</a>
+                {% comment %} <a class="navbar-brand" href={% url 'formulario' %}>Join!</a> {% endcomment %}
+                {% comment %} <a class="navbar-brand" href={% url 'listado_estudiantes' %}>Comunidad</a> {% endcomment %}
                 <a class="navbar-brand" href={% url 'profesor_listado' %}>Profesores</a>
-                <a class="navbar-brand" href={% url 'busqueda_nombre' %}>Search</a>
+                {% comment %} <a class="navbar-brand" href={% url 'busqueda_nombre' %}>Search</a> {% endcomment %}
                 {% if request.user.is_authenticated %}
                 <a class="navbar-brand" href={% url 'logout' %}>Logout</a>
-                <a class="navbar-brand" href={% url 'editar' %}>Editar Perfil</a>
+                <a class="navbar-brand" href={% url 'editar' %}>
+                    <img src= "{{user_avatar_url}}" alt= "Editar Imagen" height= "40">
+                </a>
                 {% else %}
                 <a class="btn btn-primary" href={% url 'login' %}>Login</a>
                 <a class="btn btn-dark" href={% url 'register' %}>Register</a>

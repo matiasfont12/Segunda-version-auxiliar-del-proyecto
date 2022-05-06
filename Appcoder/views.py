@@ -4,7 +4,7 @@ from Appcoder.models import Curso, Estudiante, Profesor
 from Appcoder.forms import CursoFormulario, BusquedaNombre, EstudianteFormulario
 import random
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import UpdateView, DeleteView
+from django.views.generic.edit import UpdateView, DeleteView, CreateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -137,6 +137,11 @@ class ProfesorLista(ListView):
 class ProfesorDetalle(DetailView):
   model = Profesor
   template_name = "Appcoder/profesor_datos.html"
+  
+class ProfesorCrear(LoginRequiredMixin, CreateView):
+  model = Profesor
+  success_url = "/Appcoder/profesores/"
+  fields = ["nombre", "apellido", "email", "profesion"]
   
   
 class ProfesorEditar(LoginRequiredMixin, UpdateView):

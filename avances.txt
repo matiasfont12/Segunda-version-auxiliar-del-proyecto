@@ -125,10 +125,55 @@ Le vamos a decir que si al obtener las contraseñas, la primer contraseña compa
 
 Ahora lo que vamos a identificar, es identificar cuando uno esta logueado o no segun el template, ya que desloguearse y editar el usuario no tienen sentido que aparezcan en nuestra pagina
 Entonces esto es lo que vamos a modificar.
-
 para eso vamos a usar condicionales en nuestro template padre index
+
 en el el condicional que vamos a usar, sera el if y el else como bloque; con el parametro if request.user.is_authenticated
 y tambien vamos a hacer que la informacion predeterminada quede guardada para que la modifique el usuario en el formulario, esto lo vamos a realizar como lo hicimos antes com el initial y tratandolo como un diccionario.
 
 Avatar:
+
+Para trabajar el avatar lo haremos desde el archivo de models, y llamar al from django.contrib.auth.models import User, con esto lo que vamos a hacer es trabajar algunos detalles para el usuario.
+
+Lo primero que vamos a trabajar sera el avatar: creamos el atributo y llamamos a models.ImageField(upload_to=", null= True, blank=True)
+Lo que le indicamos en el parametro es, donde se tiene que cargar la imagen, que se haga desde una carga vacia y en blanco.
+
+Lo curioso es que al hacer esto nos tira un error de pip install pillow, nos dice que no tenemos pillow instalado. Vamos a proceder a instalarlo con pip install Pillow, cuando se instala lo guardamos en nuestro registro de paquetes con pip freeze > requirements.txt
+
+Ahora debemos hacer que nuestro user se conecte con el avatar: para eso creamos la variable user y llamamos a un ForeingKey, en donde como atributo le vamos a dar User para conectarlo, on_delete para que cuando ese usuario que se conecta se borre, se haga de una forma en especial.
+
+Si nosotros creamos un usuario que se carga una foto de perfil, queda en el admin, y si borramos el usuario la imagen queda conectada a un administrador que no existe. Para eso cuando usamos un ForeingKey debemos indicar que queremos que se haga con el objeto que estamos creando
+
+al on_delete le agregamos un models.CASCADE, que lo que hace es indicarle al modelo un tipo de borrado.
+Por ej, existen 3 tipos de borrados: SET_NULL, que lo que hace es mantener el avatar pero el campo user quedar vacio, con el DO_NOTHING, el avatar queda conectado al usuario aunque no existe, y con el CASCADE se borra todo lo que este relacionado al usuario. 
+
+Luego de crearlo reaizamos un makemigrations para confirmar lo que hicimos y luego una migrate para cargar los datos en la base de datos
+
+En nuestro index, como hicimos con el editar y el logout, vamos a dar la condicion que aparezca nuestra imagen, y para esto la debemos cargar.
+
+En nuestro admin, escribimos admin.site.register(Avatar), le pasamos el modelo y cuando lo implementa, por las dudas correjimos el form Indice.models import Avatar borrando el indice para que no genere problemas
+
+Ahora, si nosotros vamos a nuestra administracion, vemos que nos deja añadir un avatar seleccionando una foto, pero si lo hacemos y vamos a ese link, nos tira error
+
+Para arreglar esto debemos ir a settings y dentro del setting del proyecto arreglar dos campos para utilizar en el url del proyecto.
+
+agregamos MEDIA_URL = '/media/', ademas debemos pasarle una ubicacion del archivo, para esto tambien añadimos MEDIA_ROOT = os
+el os es una variable de entorno para trabajar el OperationSystem, debemos importarlo facilmente con import os
+
+Al os le tenemos que decir que nos use un determinado path junto a un join, porque lo que hace es unir una direccion entera con una acotada: La direccion entera es el BASE_DIR que es la url de todo nuestro proyecto y en donde esta subido, junto a MEDIA_URL que es la porcion que indicamos de la foto
+Esto lo hacemos para conectar ambas cosas: pero vamos a juntarlo junto a 'media'
+
+Listo, ya cargamos la foto, ahora debemos identificar en donde va a acceder nuestra aplicacion para ver esa imagen que guardamos
+
+Para esto vamos a ir a nuestra url del proyecto y vamos a importar from django.conf import settings y
+from django.conf.url.static import static.
+
+y agregamos esto a un nuevo urlpatterns pero con suma +=
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
+
+En donde le cargamos la configuracion a la url
+
+Entonces, si vamos a django nuestra foto ya funciona, lo unico que falta es hacerla visible en nuestra pagina
+
+
 

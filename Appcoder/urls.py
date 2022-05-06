@@ -17,7 +17,8 @@ urlpatterns = [
     path("estudiante/borrar/<int:id>/", views.borrar_estudiante, name= "borrar_estudiante"),
     path("profesores/", views.ProfesorLista.as_view(), name= "profesor_listado"),
     path("profesores/<int:pk>/", views.ProfesorDetalle.as_view(), name= "profesor_detalle"),
-    path("profesores/<int:pk>/", views.ProfesorEditar.as_view(), name= "profesor_detalle"),
-    path("profesores/<int:pk>/", views.ProfesorBorrar.as_view(), name= "profesor_detalle")
+    path("profesores/crear", views.ProfesorCrear.as_view(), name="profesor_crear" ),
+    path("profesores/<int:pk>/editar", views.ProfesorEditar.as_view(), name= "profesor_editar"),
+    path("profesores/<int:pk>/borrar", views.ProfesorBorrar.as_view(), name= "profesor_borrar")
 ]
   

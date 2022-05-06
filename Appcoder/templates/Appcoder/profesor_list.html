@@ -4,17 +4,33 @@
 {% endblock header_index %}
 
 {% block pruebaTemplate %}
+<div>
+   <h3>Elegir</h3>
+   <ul>
+      <li> <a href={% url 'profesor_crear' %}>Crear profesor</a></li>
+      <li><a href={% url 'crear_estudiante' %}>Crear estudiante</a></li>
+      <li><a href={% url 'formulario' %}>Crear curso</a></li>
+   </ul>
+   <hr>
+</div>
+<div>
+   <h3>Profesores</h3>
 
-{% for profesor in object_list %}
-   <li>
+   {% for profesor in object_list %}
+   <ul>
       {{profesor}}
-      <a href= {% url 'profesor_detalle' profesor.id %}>  Ver más... </a>
-      <a href= {% url 'profesor_detalle' profesor.id %}>  Editar </a>
-      <a href= {% url 'profesor_detalle' profesor.id %}>  Borrar </a>
-
-   <li>
-
-{% endfor %}
+      <li><a href= {% url 'profesor_detalle' profesor.id %}>  Ver más... </a></li>
+      <li> <a href= {% url 'profesor_editar' profesor.id %}>  Editar </a></li>
+      <li><a href= {% url 'profesor_borrar' profesor.id %}>  Borrar </a></li>
+   </ul>
+   {% endfor %}
+</div>
+<hr>
+<div>
+   <ul>
+      <li><a href={% url 'busqueda_nombre' %}>Buscar curso</a></li></li>
+   </ul>
+</div>
 
 {% endblock pruebaTemplate %}
 

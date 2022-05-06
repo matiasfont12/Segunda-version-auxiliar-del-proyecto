@@ -3,12 +3,14 @@ import random
 from django.shortcuts import redirect, render
 from django.contrib.auth import login as django_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+
+from .models import Avatar
 from .forms import FormularioUser, EdicionUser
 from django.contrib.auth.decorators import login_required
 
 
 def inicio(request):
-    return render(request, "Indice/index.html", {})
+    return render(request, "Indice/index.html", {"user_avatar_url": buscar_url_avatar(request.user)})
 
 
 def about(request):
@@ -65,9 +67,9 @@ def register(request):
             username = form.cleaned_data["username"]
             
             form.save()
-            return render("Indice/index.html", {"msj": "Se creo el usuario"})
+            return render(request,"Indice/index.html", {"msj": "Se creo el usuario"})
         else:
-            return render("Indice/register.html", {"form": form, "msj": ""})
+            return render(request,"Indice/register.html", {"form": form, "msj": ""})
         
         
     form = FormularioUser()
@@ -95,9 +97,10 @@ def editar(request):
                 request.user.set_password(data.get("password1"))
             
             request.user.save()
-            return render("Indice/index.html", {"msj": ""})
+            
+            return render(request,"Indice/index.html", {"msj": "", "user_avatar_url": buscar_url_avatar(request.user)})
         else:
-            return render("Indice/editar_user.html", {"form": form, "msj": ""})
+            return render(request,"Indice/editar_user.html", {"form": form, "msj": "", "user_avatar_url": buscar_url_avatar(request.user)})
         
         
     form = EdicionUser(
@@ -108,4 +111,8 @@ def editar(request):
        "username": request.user.username
      }
     )
-    return render(request, "Indice/editar_user.html", {"form": form, "msj": ""})
+    return render(request, "Indice/editar_user.html", {"form": form, "msj": "", "user_avatar_url": buscar_url_avatar(request.user)})
+
+def buscar_url_avatar(user):
+    
+    return Avatar.objects.filter(user=user)[0].imagen.url
