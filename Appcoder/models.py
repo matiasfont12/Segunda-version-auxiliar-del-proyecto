@@ -1,10 +1,17 @@
 from django.db import models
+from ckeditor.fields import RichTextField
+from django.utils import timezone
+
 
 
 class Estudiante(models.Model):
     nombre = models.CharField(max_length=20)
     apellido = models.CharField(max_length=10)
     email = models.EmailField()
+    tarjeta_presentacion = RichTextField(blank=True, null=True)
+    informacion_creacion = models.DateTimeField(default=timezone.now)
+    
+
     
     def __str__(self):
         return f"Nombre: {self.nombre} - Apellido: {self.apellido} - Email: {self.email}"
@@ -16,6 +23,9 @@ class Profesor(models.Model):
     apellido = models.CharField(max_length=10)
     email = models.EmailField()
     profesion = models.CharField(max_length=30)
+    informacion = RichTextField(blank=True, null=True)
+    tiempo_de_creacion = models.DateTimeField(default=timezone.now)
+    
     
     
     def __str__(self):

@@ -73,7 +73,8 @@ def crear_estudiante(request):
       
       nombre=data["nombre"],
       apellido=data["apellido"],
-      email=data["email"]
+      email=data["email"],
+      tarjeta_presentacion=data["tarjeta_presentacion"]
       )
     
     nuevo_estudiante.save()
@@ -119,8 +120,9 @@ def actualizar_estudiante(request, id):
    return render(
      request,"Appcoder/actualizar_estudiante.html",
      {"formulario":formulario,
-      "estudiante": estudiante}
-     )
+      "estudiante": estudiante
+      }
+    )
 
 def borrar_estudiante(request,id):
   estudiante = Estudiante.objects.get(id=id)
@@ -141,13 +143,13 @@ class ProfesorDetalle(DetailView):
 class ProfesorCrear(LoginRequiredMixin, CreateView):
   model = Profesor
   success_url = "/Appcoder/profesores/"
-  fields = ["nombre", "apellido", "email", "profesion"]
+  fields = ["nombre", "apellido", "email", "profesion", "informacion", "tiempo_de_creacion"]
   
   
 class ProfesorEditar(LoginRequiredMixin, UpdateView):
   model = Profesor
   success_url = "/Appcoder/profesores/"
-  fields = ["nombre", "apellido", "email", "profesion"]
+  fields = ["nombre", "apellido", "email", "informacion", "tiempo_de_creacion"]
   
   
 class ProfesorBorrar(LoginRequiredMixin, DeleteView):

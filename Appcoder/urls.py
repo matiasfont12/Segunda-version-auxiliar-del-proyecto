@@ -15,6 +15,7 @@ urlpatterns = [
     path("estudiante/actualizar/<int:id>/", views.actualizar_estudiante, name= "actualizar_estudiante"),
     #DELETE:
     path("estudiante/borrar/<int:id>/", views.borrar_estudiante, name= "borrar_estudiante"),
+    #Clases basadas en vistas
     path("profesores/", views.ProfesorLista.as_view(), name= "profesor_listado"),
     path("profesores/<int:pk>/", views.ProfesorDetalle.as_view(), name= "profesor_detalle"),
     path("profesores/crear", views.ProfesorCrear.as_view(), name="profesor_crear" ),

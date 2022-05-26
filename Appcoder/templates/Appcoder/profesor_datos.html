@@ -4,8 +4,18 @@
 {% endblock header_index %}
 
 {% block pruebaTemplate %}
+<div>
+    <p> 
 
-{{object.profesion}}
+        
+        Nombre: <li>{{object.nombre}}</li>
+        Apellido: <li>{{object.apellido}}</li>
+        Email: <li>{{object.email}}</li>
+        Profesion: <li>{{object.profesion}}</li>
+        Informacion: <li>{{object.informacion | safe }}</li>
+        Tiempo: <li>{{object.tiempo_de_creacion}}</li>
+    </p>
+</div>
 
 {% endblock pruebaTemplate %}
 

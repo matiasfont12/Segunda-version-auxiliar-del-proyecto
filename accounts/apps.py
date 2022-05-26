@@ -1,7 +1,6 @@
 from django.apps import AppConfig
 
 
-class IndiceConfig(AppConfig):
+class AccountsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'Indice'
-
+    name = 'accounts'
